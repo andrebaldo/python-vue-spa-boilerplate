@@ -11,10 +11,10 @@ git clone https://github.com/andrebaldo/python-vue-spa-boilerplate.git
 
 ### Prerequisites
 
-Python 3: https://www.python.org/downloads/
-Node.js: https://nodejs.org/
-Vue.js: https://vuejs.org/v2/guide/installation.html
-Vue Client: https://cli.vuejs.org/guide/installation.html
+* [Python 3](https://www.python.org/downloads/)
+* [Node.js](https://nodejs.org/)
+* [Vue.js](https://vuejs.org/v2/guide/installation.html)
+* [Vue Client](https://cli.vuejs.org/guide/installation.html) 
 
 ```
 Give examples
@@ -30,7 +30,7 @@ cd python-vue-spa-boilerplate\backend
 pip install requirements.txt
 ```
 
-And after the pip instalation finishes you can run the back end using:
+And after the pip instalation finishes you can run the backend using:
 
 ```
 python app.py
@@ -42,13 +42,6 @@ cd python-vue-spa-boilerplate\frontend
 npm i
 yarn serve
 ```
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
 ## Authors
 
 * **Andre Baldo**  [andrelbaldo](https://github.com/andrelbaldo)
