@@ -1,6 +1,8 @@
 # file path: /backend/app.py
 import flask 
 from services.auth import Auth
+from models.defaultMethodResult import DefaultMethodResult
+from flask import jsonify, request, session, redirect
 from services.database import Database
 
 database = Database()
@@ -17,7 +19,18 @@ db.create_all()
 # Sets the route for this endpoint, this will configure our web server to receive requests at this path.
 @app.route('/register', methods=(['POST']))
 def register():
-    return authModule.register(request)
+    requestPayload = request.get_json()  
+    username = requestPayload['email']
+    password = requestPayload['password']
+    mobilePhone= requestPayload['mobilePhone']
+
+    registerResult = authModule.register(username, password, mobilePhone)
+    if registerResult.success == True:
+        return jsonify(registerResult), 200
+    else:
+        return jsonify(registerResult), 500
+
+    return jsonify(registerResult), 500
 
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = '*'

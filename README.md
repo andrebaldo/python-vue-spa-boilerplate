@@ -1,4 +1,4 @@
-# Project Title
+# Basic boilerpate, Python backend, Vue.js frontend
 
 A SPA app with frontend made using Vue.js and backend in Python 3.
 
@@ -15,10 +15,6 @@ git clone https://github.com/andrebaldo/python-vue-spa-boilerplate.git
 * [Node.js](https://nodejs.org/)
 * [Vue.js](https://vuejs.org/v2/guide/installation.html)
 * [Vue Client](https://cli.vuejs.org/guide/installation.html) 
-
-```
-Give examples
-```
 
 ### Installing
 
