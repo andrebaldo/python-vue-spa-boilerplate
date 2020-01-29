@@ -1,9 +1,8 @@
+<!-- file path: /frontend/src/components/Register.vue -->
 <template>
   <v-card>
     <v-card-title primary-title>
-      <h1>New member</h1>
-      <v-spacer></v-spacer>
-      <router-link to="login">Or Login Instead</router-link>
+      <h1>Register</h1>
     </v-card-title>
     <v-card-text>
       <v-form rounded v-model="isRegisterFormValid">
@@ -45,31 +44,35 @@
           prepend-icon="mdi-phone"
           type="tel"
         ></v-text-field>
-        <v-alert
-          type="success"
-          v-if="getIsRegistrationProcessSucceed"
-        >New user registred with success!</v-alert>
-        <v-alert type="error" v-if="getRegistrationProcessMessage">{{getRegistrationProcessMessage}}</v-alert>
+
         <div class="text-center">
           <v-progress-circular indeterminate color="primary" v-if="isProcessing"></v-progress-circular>
         </div>
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <router-link to="forgot-password">I forgot my password</router-link>
+      <router-link to="login">Go to login</router-link>
       <v-spacer></v-spacer>
       <v-btn
         color="success"
-        :disabled="!isRegisterFormValid"
+        :disabled="!isRegisterFormValid || isProcessing || GetIsSnackbarVisible"
         @click="registerNewUser({email:email, password:password, mobilePhone:mobilePhone})"
-      >Sign-up</v-btn>
+      >
+        <v-icon left>mdi-account-plus</v-icon>Register
+      </v-btn>
+      <SnackNotification
+        v-bind:visibility="GetIsSnackbarVisible"
+        v-bind:colorCondition="getIsRegistrationProcessSucceed"
+        v-bind:message="getRegistrationProcessMessage"
+      />
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-//import { mapState } from 'vuex';
 import { mapActions, mapGetters } from "vuex";
+import SnackNotification from "@/modules/notification/SnackNotification.vue";
+
 export default {
   name: "Register",
   data: function() {
@@ -128,12 +131,12 @@ export default {
       }
       return ["error", "warning", "success"][selectedColorIndex];
     },
-    ...mapActions(["registerNewUser"]),
+    ...mapActions(["registerNewUser", "setSnackbarVisibility"]),
     validateEmail(email) {
       var re = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
       return (
         re.test(String(email).toLowerCase()) ||
-        "Oops, this doesn't looks like an email :("
+        "Oops, this doesn't looks like rigth, can you check please?"
       );
     }
   },
@@ -141,8 +144,12 @@ export default {
     ...mapGetters([
       "getIsRegistrationProcessSucceed",
       "getRegistrationProcessMessage",
-      "isProcessing"
+      "isProcessing",
+      "GetIsSnackbarVisible"
     ])
+  },
+  components: {
+    SnackNotification
   }
 };
 </script>

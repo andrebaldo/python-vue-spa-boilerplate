@@ -1,9 +1,9 @@
-<!-- file path: /frontend/src/Views/RegisterVue.vue -->
+<!-- file path: /frontend/src/Views/LoginVue.vue -->
 <template>
 <v-container grid-list-xs>
   <v-layout row wrap justify-center align-center>
     <v-flex xs12 md8 lg6>
-      <Register />
+      <Login />
     </v-flex>
   </v-layout>
 </v-container>
@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import Register from "@/modules/authentication/Register.vue";
+import Login from "@/modules/authentication/Login.vue";
 export default {
-  name: "RegisterView",
+  name: "LoginView",
   components: {
-    Register
+    Login
   }
 };
 </script>

@@ -2,8 +2,11 @@
 import flask 
 from services.auth import Auth
 from models.defaultMethodResult import DefaultMethodResult
+from models.loginTokenResult import LoginTokenResult
 from flask import jsonify, request, session, redirect
 from services.database import Database
+from services.jsonClassEncoder import JsonClassEncoder
+
 
 database = Database()
 
@@ -15,6 +18,7 @@ app.secret_key = 'this will be used to cryptograph sensible data like authentica
 db = database.createDatabaseInstance(app)
 authModule = Auth(db)
 db.create_all()
+jsonClassEncoder = JsonClassEncoder()
 
 # Sets the route for this endpoint, this will configure our web server to receive requests at this path.
 @app.route('/register', methods=(['POST']))
@@ -26,11 +30,20 @@ def register():
 
     registerResult = authModule.register(username, password, mobilePhone)
     if registerResult.success == True:
-        return jsonify(registerResult), 200
+        return jsonClassEncoder.encode(registerResult), 200
     else:
-        return jsonify(registerResult), 500
+        return jsonClassEncoder.encode(registerResult), 500
 
-    return jsonify(registerResult), 500
+@app.route('/token', methods=(['POST']))
+def token():
+    requestPayload = request.get_json()  
+    username = requestPayload['email']
+    password = requestPayload['password']
+    loginResult = authModule.getLoginToken(username, password, app.config['SECRET_KEY'])
+    if loginResult.success == True:
+        return jsonClassEncoder.encode(loginResult), 200
+    else:
+        return jsonClassEncoder.encode(loginResult), 401
 
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
@@ -39,6 +52,7 @@ def add_cors_headers(response):
         headers = request.headers.get('Access-Control-Request-Headers')
         if headers:
             response.headers['Access-Control-Allow-Headers'] = headers
+
     return response
 
 app.after_request(add_cors_headers)
