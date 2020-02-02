@@ -1,3 +1,7 @@
+# models\defaultMethodResult.py
+# Author : Andre Baldo (http://github.com/andrebaldo/)
+# A default class to build a default request response
+# throught json serialization
 class DefaultMethodResult():
     success: False
     message: ''

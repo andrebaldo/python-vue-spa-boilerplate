@@ -1,3 +1,6 @@
+# models\loginTokenResult.py
+# Author : Andre Baldo (http://github.com/andrebaldo/)
+# A specialized model to build a response for login requests.
 class LoginTokenResult():
     success: False
     message: ''

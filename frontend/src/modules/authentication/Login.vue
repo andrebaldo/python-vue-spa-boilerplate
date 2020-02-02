@@ -40,12 +40,12 @@
       <v-btn
         color="success"
         :disabled="!isLoginFormValid || isProcessing || GetIsSnackbarVisible"
-        @click="getLoginToken({email:email, password:password})"
+        @click="login({email:email, password:password})"
       >Login</v-btn>
     </v-card-actions>
     <SnackNotification
       v-bind:visibility="GetIsSnackbarVisible"
-      v-bind:colorCondition="isUserLoggedIn"
+      v-bind:colorCondition="getIsUserLoggedIn"
       v-bind:message="getLoginProcessMessage"
     />
   </v-card>
@@ -89,20 +89,27 @@ export default {
       }
       return !!value || errorMessage;
     },
-    ...mapActions(["getLoginToken"]),
+    ...mapActions(["authenticateUserAndSetToken"]),
     validateEmail(email) {
       var re = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
       return (
         re.test(String(email).toLowerCase()) ||
         "Oops, this doesn't looks like rigth, can you check please?"
       );
+    },
+    login(loginData){
+      loginData.controllerReference = this;
+      this.authenticateUserAndSetToken(loginData)
+      .then(function(controller){
+        controller.$router.push('/')
+      })
     }
   },
   computed: {
     ...mapGetters([
       "getLoginProcessMessage",
       "isProcessing",
-      "isUserLoggedIn",
+      "getIsUserLoggedIn",
       "GetIsSnackbarVisible"
     ])
   },

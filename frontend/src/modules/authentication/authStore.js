@@ -1,8 +1,6 @@
-import axios from "axios";
-const axiosInstance = axios.create({
-    baseURL: 'http://localhost:5000/',
-    timeout: 30000
-});
+import axiosInstance from '@/plugins/connectionBuilder.js'
+
+
 
 const authStore = {
     state: {
@@ -20,7 +18,7 @@ const authStore = {
             state.loginProcessMessage = loginResult.message;
             if (loginResult.success) {
                 sessionStorage.loginToken = loginResult.token;
-            }else  {
+            } else {
                 sessionStorage.removeItem("loginToken");
             }
         },
@@ -32,6 +30,10 @@ const authStore = {
         setIsProcessing(state, isProcessing) {
             state.isProcessing = isProcessing
         },
+        setLogout(state) {
+            sessionStorage.removeItem('loginToken');
+            state.isUserLoggedIn = false;
+        }
     },
     actions: {
         registerNewUser({ commit, dispatch }, payload) {
@@ -41,40 +43,79 @@ const authStore = {
                     commit('setIsProcessing', false);
                     dispatch('toggleSnackBarvisibleAction');
                     commit('setRegistrationStatus', { success: true, message: response.data.message });
-                    
+
                 })
                 .catch(function (error) {
                     commit('setIsProcessing', false);
                     dispatch('toggleSnackBarvisibleAction');
                     if (typeof error != 'undefined' && typeof error.response != 'undefined') {
                         commit('setRegistrationStatus', { success: false, message: error.response.data.message });
-                    }else{
+                    } else {
                         commit('setRegistrationStatus', { success: false, message: error.message });
                     }
                 });
         },
-        getLoginToken({ commit, dispatch }, payload) {
-            commit('setIsProcessing', true);
-            axiosInstance.post('token', payload)
-                .then(function (response) {
-                    commit('setIsProcessing', false);
-                    dispatch('toggleSnackBarvisibleAction');
-                    commit('setLogged', { success: true, token: response.data.token});
+        authenticateUserAndSetToken({ commit, dispatch }, payload) {
+            return new Promise(function (resolve, reject) {
+                commit('setIsProcessing', true);
+                let controllerReference = payload.controllerReference;
+                delete (payload.controllerReference);
+                axiosInstance.post('token', payload)
+                    .then(function (response) {
+                        commit('setIsProcessing', false);
+                        commit('setLogged', { success: true, token: response.data.token, message: "Credentials accepted!" });
+                        dispatch('toggleSnackBarvisibleAction');
+                        resolve(controllerReference);
+                        axiosInstance.defaults.headers.common['Authorization'] = response.data.token;
 
-                })
-                .catch(function (error) {
-                    commit('setIsProcessing', false);
-                    dispatch('toggleSnackBarvisibleAction');
+                        axiosInstance.get('home')
+                            .then(function (response) {
+                                response.tomate = 1
+                               
+                            })
+                            .catch(function (error) {
+                                error.test = 1
+                               
+                            })
+                    })
+                    .catch(function (error) {
+                        commit('setIsProcessing', false);
+                        if (typeof error != 'undefined' && typeof error.response != 'undefined') {
+                            commit('setLogged', { success: false, message: error.response.data.message });
+                        } else {
+                            commit('setLogged', { success: false, message: error.message });
+                        }
+                        dispatch('toggleSnackBarvisibleAction');
+                        reject();
+                    });
+            });
 
-                    if (typeof error != 'undefined' && typeof error.response != 'undefined') {
-                        commit('setLogged', { success: false, message: error.response.data.message });
-                    }else{
-                        commit('setLogged', { success: false, message: error.message });
-                    }
-                });
         },
-        setSnackbarVisibility({commit}, isVisible){
+        setSnackbarVisibility({ commit }, isVisible) {
             commit('setIsSnackbarVisible', isVisible);
+        },
+        logout({ commit }, payload) {
+            return new Promise(function (resolve, reject) {
+                let controllerReference = payload.controllerReference;
+                delete (payload.controllerReference);
+                axiosInstance.post('logout', payload)
+                    .then(function () {
+                        commit('setIsProcessing', false);
+                        commit('setLogout');
+                        //dispatch('toggleSnackBarvisibleAction');
+                        resolve(controllerReference);
+                    })
+                    .catch(function (error) {
+                        commit('setIsProcessing', false);
+                        if (typeof error != 'undefined' && typeof error.response != 'undefined') {
+                            commit('setLogout');
+                        } else {
+                            commit('setLogout');
+                        }
+                        //dispatch('toggleSnackBarvisibleAction');
+                        reject();
+                    });
+            });
         }
     },
     getters: {
@@ -95,11 +136,15 @@ const authStore = {
         isProcessing(state) {
             return state.isProcessing;
         },
-        isUserLoggedIn() {
-            if (sessionStorage.loginToken) {
-                return true;
+        getIsUserLoggedIn(state) {
+
+            if (state.isUserLoggedIn === false) {
+                if (sessionStorage.loginToken) {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            return true;
         }
     }
 }
