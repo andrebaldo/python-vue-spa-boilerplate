@@ -7,7 +7,6 @@
 # from your command pront, tested just on Windows.
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from entities.test import User
 
 app = Flask(__name__)
 
@@ -44,6 +43,8 @@ class UserSession(db.Model):
     jwToken = db.Column(db.String(4000), nullable=False)
     url = db.Column(db.String(4000), nullable=True)
     logoutDate = db.Column(db.DateTime, nullable=True)
+
+
 
 db.create_all()
 db.session.commit()

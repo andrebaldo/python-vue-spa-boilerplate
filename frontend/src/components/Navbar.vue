@@ -29,7 +29,7 @@ export default {
     processLogout(){
       this.logout({controllerReference:this})
       .then(function(ctrl){
-        ctrl.$route.push('login')
+        ctrl.$router.push('login')
       })
     }
   }

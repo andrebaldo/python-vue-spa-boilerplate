@@ -64,19 +64,8 @@ const authStore = {
                     .then(function (response) {
                         commit('setIsProcessing', false);
                         commit('setLogged', { success: true, token: response.data.token, message: "Credentials accepted!" });
-                        dispatch('toggleSnackBarvisibleAction');
                         resolve(controllerReference);
                         axiosInstance.defaults.headers.common['Authorization'] = response.data.token;
-
-                        axiosInstance.get('home')
-                            .then(function (response) {
-                                response.tomate = 1
-                               
-                            })
-                            .catch(function (error) {
-                                error.test = 1
-                               
-                            })
                     })
                     .catch(function (error) {
                         commit('setIsProcessing', false);
