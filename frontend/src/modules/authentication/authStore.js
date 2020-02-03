@@ -1,6 +1,6 @@
+// frontend\src\modules\authentication\authStore.js
+// Author: Author : Andre Baldo (http://github.com/andrebaldo/) 
 import axiosInstance from '@/plugins/connectionBuilder.js'
-
-
 
 const authStore = {
     state: {

@@ -1,3 +1,6 @@
+<!-- 
+frontend\src\views\Home.vue
+Author: Author : Andre Baldo (http://github.com/andrebaldo/) -->
 <template>
   <div class="home">
     <h1>Home</h1>

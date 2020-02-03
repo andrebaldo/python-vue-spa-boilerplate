@@ -114,5 +114,5 @@ def load_user_from_request(request):
     # this will cause the request decorated with @flask_login.login_required been denied
     return None
 
-
-app.run()
+if __name__ == '__main__':
+    app.run()

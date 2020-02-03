@@ -1,4 +1,6 @@
-<!-- file path: /frontend/src/Views/LoginVue.vue -->
+<!-- 
+frontend\src\views\LoginView.vue
+Author: Author : Andre Baldo (http://github.com/andrebaldo/) -->
 <template>
 <v-container grid-list-xs>
   <v-layout row wrap justify-center align-center>

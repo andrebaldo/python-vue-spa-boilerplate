@@ -1,4 +1,5 @@
-
+// frontend\src\modules\notification\notificationStore.js
+// Author: Author : Andre Baldo (http://github.com/andrebaldo/) 
 const store = {
     
     state: {

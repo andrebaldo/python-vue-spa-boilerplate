@@ -1,4 +1,6 @@
-<!-- file path: /frontend/src/components/Navbar.vue -->
+<!-- 
+frontend\src\components\Navbar.vue 
+Author: Author : Andre Baldo (http://github.com/andrebaldo/) -->
 <template>
   <v-app-bar app color="indigo" dark>
     <v-app-bar-nav-icon @click.stop="drawer = !drawer" />

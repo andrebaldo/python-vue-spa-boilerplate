@@ -1,3 +1,6 @@
+<!-- 
+frontend\src\modules\notification\SnackNotification.vue
+Author: Author : Andre Baldo (http://github.com/andrebaldo/) -->
 <template>
   <v-snackbar
     v-model="visibility"

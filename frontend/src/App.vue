@@ -1,4 +1,6 @@
-<!-- file path: /frontend/src/App.vue -->
+<!-- 
+frontend\src\App.vue
+Author: Author : Andre Baldo (http://github.com/andrebaldo/) -->
 <template>
   <v-app>
     <Navbar/>

@@ -1,4 +1,6 @@
-<!-- file path: /frontend/src/components/Login.vue -->
+<!-- 
+frontend\src\modules\authentication\Login.vue
+Author: Author : Andre Baldo (http://github.com/andrebaldo/) -->
 <template>
   <v-card>
     <v-card-title primary-title>

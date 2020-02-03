@@ -1,3 +1,5 @@
+// frontend\src\main.js
+// Author: Author : Andre Baldo (http://github.com/andrebaldo/) import Vue from 'vue'
 import Vue from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
