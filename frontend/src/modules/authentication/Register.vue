@@ -135,7 +135,7 @@ export default {
     },
     ...mapActions(["registerNewUser", "setSnackbarVisibility"]),
     validateEmail(email) {
-      var re = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+      var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
       return (
         re.test(String(email).toLowerCase()) ||
         "Oops, this doesn't looks like rigth, can you check please?"

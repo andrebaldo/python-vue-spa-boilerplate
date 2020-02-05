@@ -7,13 +7,14 @@
 # from your command pront, tested just on Windows.
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import json
 
 app = Flask(__name__)
 
-SERVER = 'localhost'
-DATABASE = 'project001'
-DRIVER = 'SQL Server Native Client 11.0'
-DATABASE_CONNECTION = f'mssql://{SERVER}/{DATABASE}?trusted_connection=yes&driver={DRIVER}'
+with open('./config.json', 'r') as jsonConfig:
+    config = json.load(jsonConfig)
+
+DATABASE_CONNECTION = config['database_connection_string']
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_CONNECTION
 
 db = SQLAlchemy(app)

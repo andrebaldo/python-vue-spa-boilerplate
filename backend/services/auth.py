@@ -1,12 +1,12 @@
 # services\auth.py
 # Author : Andre Baldo (http://github.com/andrebaldo/)
 # This module deals with the authentication process and authentication checks.
+import bcrypt
 import jwt
 from entities.user import User
 from entities.userSession import UserSession
 from models.defaultMethodResult import DefaultMethodResult
 from models.loginTokenResult import LoginTokenResult
-from werkzeug import check_password_hash, generate_password_hash
 from datetime import datetime, timedelta
 from sqlalchemy import and_, or_, update
 from entities.databaseSessionManager import SessionManager
@@ -25,8 +25,8 @@ class Auth():
         """
         error = self.validateRegisterData(username, password)
 
-        # Converts the plain text password into a hash using the method 'generate_password_hash' from the 'werkzeug' library/package
-        password = generate_password_hash(password)
+        # Using a secured library (bcrypt) to hash the password with a generated salt
+        password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
         # If the error var still set as None, if is None proceed to the user creation
         # But if there is an error set, returns this error to the browser
         if error is None:
@@ -79,7 +79,7 @@ class Auth():
         if result is None:
             error = 'Invalid credentials'
         else:
-            if check_password_hash(result.password, password) == False:
+            if not bcrypt.checkpw(password.encode('utf-8'), result.password):
                 error = 'Invalid credentials'
 
         success = False
