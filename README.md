@@ -6,6 +6,9 @@ This app has only 3 functions
 * Login - A component to authenticate and generate a JWT for the user session
 * Logout - To invalidate the user session.
 
+## Documentation
+A more detailed documentation can be found here: https://medium.com/@andrelbaldo/register-login-and-logout-boilerplate-written-in-vue-js-and-python-as-api-5ce57e33774b?source=friends_link&sk=4cdaa222f96dc4bd3a3a75eecf9eab97
+
 ## Getting Started
 
 Clone the repository 
