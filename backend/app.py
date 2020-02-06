@@ -2,17 +2,14 @@
 # Author : Andre Baldo (http://github.com/andrebaldo/)
 # The main file for this login service, this will deal with the login process
 # and the login authentication, and logout.
-import flask 
-from flask import jsonify, request, session, redirect
-
-from services.auth import Auth
-from models.defaultMethodResult import DefaultMethodResult
-from models.loginTokenResult import LoginTokenResult
-from services.jsonClassEncoder import JsonClassEncoder
-
+import flask
 import flask_login
-from flask_login import user_loaded_from_header
+from flask import request
+
+from models.loginTokenResult import LoginTokenResult
+from services.auth import Auth
 from services.customSessionInterface import CustomSessionInterface
+from services.jsonClassEncoder import JsonClassEncoder
 
 app = flask.Flask(__name__)
 # Configurations
@@ -27,9 +24,11 @@ app.session_interface = CustomSessionInterface()
 
 authModule = Auth()
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return authModule.load_user(user_id)
+
 
 # Only requests that have an Authorization request reader set with a valid login token
 # can access the protected routes, like this '/home' one for example
@@ -38,13 +37,14 @@ def load_user(user_id):
 def home():
     return 'Home protected by @flask_login.login_required'
 
+
 # Sets the route for this endpoint, this will configure our web server to receive requests at this path.
 @app.route('/register', methods=(['POST']))
 def register():
-    requestPayload = request.get_json()  
+    requestPayload = request.get_json()
     username = requestPayload['email']
     password = requestPayload['password']
-    mobilePhone= requestPayload['mobilePhone']
+    mobilePhone = requestPayload['mobilePhone']
 
     registerResult = authModule.register(username, password, mobilePhone)
     if registerResult.success == True:
@@ -52,7 +52,8 @@ def register():
     else:
         return jsonClassEncoder.encode(registerResult), 500
 
-# this route will login the user and return a Json Web Token, this token 
+
+# this route will login the user and return a Json Web Token, this token
 # will be stored into the client aplication and need to be passed over for each new 
 # request, via Authorizaton header.
 @app.route('/token', methods=(['POST']))
@@ -63,7 +64,7 @@ def token():
         loginResult = LoginTokenResult(True, 'Login successful', activeSession.jwToken)
         return jsonClassEncoder.encode(loginResult), 200
     else:
-        requestPayload = request.get_json()  
+        requestPayload = request.get_json()
         username = requestPayload['email']
         password = requestPayload['password']
         loginResult = authModule.getLoginToken(username, password, app.config['SECRET_KEY'])
@@ -72,12 +73,13 @@ def token():
         else:
             return jsonClassEncoder.encode(loginResult), 401
 
+
 # This will invalidate the user current user session on the server
 @app.route('/logout', methods=(['POST']))
 def sessionLogout():
     authToken = request.headers.get('Authorization')
     logoutResult = authModule.SessionLogout(authToken, request.url)
-    if logoutResult.success == True:        
+    if logoutResult.success == True:
         return jsonClassEncoder.encode(logoutResult), 200
     else:
         return jsonClassEncoder.encode(logoutResult), 401
@@ -94,6 +96,8 @@ def add_cors_headers(response):
             response.headers['Access-Control-Allow-Headers'] = headers
 
     return response
+
+
 app.after_request(add_cors_headers)
 
 
@@ -108,11 +112,12 @@ def load_user_from_request(request):
             user = authModule.GetUserByToken(authToken)
             return user
         except TypeError:
-            pass        
+            pass
 
-    # If it can't find an active session returns None, 
+            # If it can't find an active session returns None,
     # this will cause the request decorated with @flask_login.login_required been denied
     return None
+
 
 if __name__ == '__main__':
     app.run()

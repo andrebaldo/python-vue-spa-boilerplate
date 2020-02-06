@@ -52,7 +52,7 @@ cd ..
 Using the same command prompt, go to the backend folder (if you are not in there yet) and run the pip install requirements.txt command
 
 ```
-pip install requirements.txt
+pip install -r ./requirements.txt
 ```
 Once the pip have installed all the dependencies you need to create the database structure, to do it there is
 python script that does it for you, just execute this command:
