@@ -8,10 +8,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import json
+import os
 
 app = Flask(__name__)
 
-with open('./config.json', 'r') as jsonConfig:
+workingDirectory = os.getcwd()
+configFile = os.path.join(workingDirectory, 'config.json')
+
+with open(configFile, 'r') as jsonConfig:
     config = json.load(jsonConfig)
 
 DATABASE_CONNECTION = config['database_connection_string']
