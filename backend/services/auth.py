@@ -79,7 +79,7 @@ class Auth():
         if result is None:
             error = 'Invalid credentials'
         else:
-            if not bcrypt.checkpw(password.encode('utf-8'), result.password):
+            if not bcrypt.checkpw(password.encode('utf-8'), result.password.encode('utf-8')):
                 error = 'Invalid credentials'
 
         success = False

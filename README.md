@@ -20,6 +20,8 @@ Clone the repository
 git clone https://github.com/andrebaldo/python-vue-spa-boilerplate.git
 ```
 
+
+
 ### Prerequisites
 
 * [Python 3](https://www.python.org/downloads/)
@@ -34,7 +36,17 @@ The installation is made in two steps, Backend and Frontend.
 #### Database
 If you don't have an SQL Server instance in your local machine you can install it downloading the 
 "Microsoft SQL Server Express" or change the python file to point to a existing instance.
-In your SQL instance create a new database called "project001"
+
+Copy the config.template.json file and name it to config.json, then edit the connection string accordingly with your database,
+here is an example for Microsoft SQL Server.
+```
+{
+  "database_connection_string": "mssql://localhost/myDatabase?trusted_connection=yes&driver=SQL Server Native Client 11.0"
+}
+```
+localhost: The computer address where the database is listening</br>
+myDatabase: The name of the database you want to use in this project</br>
+driver: The driver used to talk to the database server</br>
 
 #### Backend
 Before you install the python dependencies you need to install the virtualenv and activate it, in order

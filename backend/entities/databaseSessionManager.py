@@ -3,11 +3,15 @@
 # This class will return a database SQLAlchemy session,
 # classes which want to manipulate data can use it to manipulate the database.
 import json
+import os
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-with open('./config.json', 'r') as jsonConfig:
+workingDirectory = os.getcwd()
+configFile = os.path.join(workingDirectory, 'config.json')
+
+with open(configFile, 'r') as jsonConfig:
     config = json.load(jsonConfig)
 
 DATABASE_CONNECTION = config['database_connection_string']
