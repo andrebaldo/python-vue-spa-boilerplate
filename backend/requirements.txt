@@ -1,7 +1,7 @@
 blinker==1.4
 cffi==1.13.2
 Click==7.0
-cryptography==2.8
+cryptography==41.0.0
 Flask==1.1.1
 Flask-Login==0.4.1
 Flask-SQLAlchemy==2.4.1
